@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import EventCard from '../components/EventCard.astro'
+---
+<BaseLayout>
+  <h2 slot="content" class="text-2xl font-bold mb-4">Calendario de eventos</h2>
+  <p slot="content" class="mb-6 text-slate-600">Hackathones, meetups, ponencias y otros eventos relevantes.</p>
+
+  <div slot="content" class="grid sm:grid-cols-2 gap-4">
+    <EventCard title="Hackathon Mujeres en Tech" date="2025-12-05" location="Madrid (online)" link="#" />
+    <EventCard title="Charla: Carrera en Data" date="2025-11-20" location="Online" link="#" />
+  </div>
+
+  <p slot="content" class="mt-6 text-sm text-slate-500">Nota: esta página es una lista estática; para un calendario interactivo se puede integrar FullCalendar o Google Calendar API.</p>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+// Props: title, description, youtubeId
+const { title = 'Curso', description = '', youtubeId = '' } = Astro.props
+---
+<article class="theme-card rounded shadow p-4 flex gap-4">
+  <div class="w-40 h-24 theme-block rounded overflow-hidden">
+    {youtubeId ? (
+      <iframe class="w-full h-full" src={`https://www.youtube.com/embed/${youtubeId}`} title={title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    ) : (
+      <div class="w-full h-full flex items-center justify-center theme-text-secondary">Preview</div>
+    )}
+  </div>
+  <div>
+    <h3 class="font-semibold">{title}</h3>
+    <p class="text-sm theme-text-secondary">{description}</p>
+  </div>
+</article>

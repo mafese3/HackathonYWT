@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import CourseCard from '../components/CourseCard.astro'
+---
+<BaseLayout>
+  <h2 slot="content" class="text-2xl font-bold mb-4">Cursos y playlists</h2>
+  <p slot="content" class="mb-6 theme-text-secondary">Cursos más largos y playlists que profundizan los temas. Cada tarjeta enlaza a YouTube.</p>
+
+  <div slot="content" class="space-y-4">
+    <CourseCard title="Curso completo de JavaScript" description="Bases, DOM y fetch" youtubeId="upDLs1sn7g4" />
+    <CourseCard title="Machine Learning desde cero" description="Conceptos y pipeline" youtubeId="GwIo3gDZCVQ" />
+  </div>
+</BaseLayout>

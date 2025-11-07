@@ -1,0 +1,9 @@
+---
+// Props: title, date, location, link
+const { title = 'Evento', date = '', location = '', link = '#' } = Astro.props
+---
+<article class="theme-card rounded shadow p-4">
+  <h4 class="font-semibold">{title}</h4>
+  <p class="text-sm theme-text-secondary">{date} · {location}</p>
+  <a class="theme-link text-sm mt-2 inline-block hover:opacity-80 transition-opacity" href={link}>Más info</a>
+</article>

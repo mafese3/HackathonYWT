@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout>
+  <h1 slot="content" class="text-3xl font-bold mb-4">Bienvenidas y Bienvenidos a YWT STEM Forum</h1>
+  <p slot="content" class="mb-6">Plataforma educativa y comunitaria para visibilizar referentes, cursos y eventos que fomenten la participación de mujeres y minorías en STEM.</p>
+
+  <section slot="content" class="grid md:grid-cols-3 gap-4">
+    <a href="/videos" class="theme-block p-4 rounded shadow hover:border-accent-color transition-colors">
+      Videos cortos<br><span class="text-sm theme-text-secondary">1 min - micro-lecciones</span>
+    </a>
+    <a href="/courses" class="theme-block p-4 rounded shadow hover:border-accent-color transition-colors">
+      Cursos<br><span class="text-sm theme-text-secondary">Más profundidad (YouTube)</span>
+    </a>
+    <a href="/forum" class="theme-block p-4 rounded shadow hover:border-accent-color transition-colors">
+      Foro<br><span class="text-sm theme-text-secondary">Historias, referentes y discusiones</span>
+    </a>
+  </section>
+</BaseLayout>

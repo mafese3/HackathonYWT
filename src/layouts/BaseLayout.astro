@@ -1,0 +1,91 @@
+---
+import Nav from '../components/Nav.astro'
+
+// Script que se ejecuta en el cliente para inicializar el tema
+const themeScript = `
+{
+  // Función para inicializar el tema
+  function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    return savedTheme;
+  }
+
+  // Función para cambiar el tema
+  window.toggleTheme = function() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    // Actualizar el tema
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Actualizar todos los toggles
+    document.querySelectorAll('.theme-toggle').forEach(toggle => {
+      toggle.checked = newTheme === 'dark';
+    });
+  }
+
+  // Inicializar tema al cargar
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentTheme = initTheme();
+    document.querySelectorAll('.theme-toggle').forEach(toggle => {
+      toggle.checked = currentTheme === 'dark';
+    });
+  });
+}
+`;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <slot name="head" />
+    <link rel="stylesheet" href="/src/styles/global.css">
+    <title><slot /> - Hackathon YWT</title>
+    <script>
+      /** Configura el tema inicial y expone funciones de tema */
+      (function () {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+          const theme = stored || (prefersDark ? 'dark' : 'light');
+          
+          // Set initial theme
+          document.documentElement.setAttribute('data-theme', theme);
+          
+          // Set window properties
+          window.__theme = theme;
+          window.toggleTheme = function () {
+            const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            window.__theme = next;
+            document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
+            return next;
+          };
+        } catch (e) {
+          // silent
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="theme-header shadow-lg">
+      <div class="container py-4 flex items-center justify-between">
+        <a href="/" class="text-xl font-bold theme-link">YWT STEM Forum</a>
+        <Nav />
+      </div>
+    </header>
+
+    <main class="container py-8 flex-grow">
+      <slot name="content" />
+    </main>
+
+    <footer class="theme-header border-t mt-auto">
+      <div class="container py-6 text-sm theme-text-secondary">© {new Date().getFullYear()} Yes We Tech — Plataforma educativa para reducir la brecha de género en STEM</div>
+    </footer>
+  </body>
+</html>

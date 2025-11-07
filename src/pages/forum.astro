@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout>
+  <h2 slot="content" class="text-2xl font-bold mb-4">Foro comunitario</h2>
+  <p slot="content" class="mb-4 theme-text-secondary">Comparte referentes, haz preguntas y publica experiencias. (Prototipo estático — se puede conectar a un backend después)</p>
+
+  <section slot="content" class="space-y-4">
+    <article class="theme-card rounded shadow p-4">
+      <h3 class="font-semibold">Referente: Dra. Ana López</h3>
+      <p class="text-sm theme-text-secondary">Investigadora en IA. ¿Alguien tiene enlaces a sus charlas?</p>
+    </article>
+
+    <article class="theme-card rounded shadow p-4">
+      <h3 class="font-semibold">Consejos para la primera hackathon</h3>
+      <p class="text-sm theme-text-secondary">Equipo mixto y enfoque en MVP. Comparte tu experiencia.</p>
+    </article>
+
+    <form class="theme-card rounded shadow p-4 space-y-3">
+      <label class="block">
+        <span class="text-sm theme-text-secondary">Título</span>
+        <input class="mt-1 block w-full theme-input rounded px-2 py-1" />
+      </label>
+      <label class="block">
+        <span class="text-sm theme-text-secondary">Mensaje</span>
+        <textarea class="mt-1 block w-full theme-input rounded px-2 py-1" rows="4"></textarea>
+      </label>
+      <button class="bg-accent-color hover:opacity-90 text-white px-4 py-2 rounded transition-opacity">
+        Publicar (demo)
+      </button>
+    </form>
+  </section>
+</BaseLayout>

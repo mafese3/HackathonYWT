@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<style>
+  /* Estilos para el toggle switch */
+  .peer:checked ~ div {
+    @apply bg-purple-600;
+  }
+  
+  /* Transiciones suaves */
+  div[class*="peer-checked:after"],
+  div[class*="after:transition-all"] {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Mejoras de accesibilidad */
+  .peer:focus-visible ~ div {
+    @apply ring-2 ring-purple-400 ring-offset-2;
+  }
+</style>
+
+<BaseLayout>
+  <section slot="content" class="max-w-3xl mx-auto">
+    <h1 class="text-2xl font-semibold mb-4">Accesibilidad</h1>
+
+    <div class="mb-6">
+      <label class="block mb-2 font-medium">Modo de color</label>
+      <div class="flex items-center">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input 
+            type="checkbox" 
+            id="theme-toggle"
+            class="sr-only peer"
+            aria-label="Alternar tema claro y oscuro"
+          />
+          <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600">
+          </div>
+          <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <span class="dark:hidden">Modo oscuro</span>
+            <span class="hidden dark:inline">Modo claro</span>
+          </span>
+        </label>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+        Elige entre modo claro u oscuro. La selección se guarda en tu navegador.
+      </p>
+    </div>
+
+    <!-- Otras opciones de accesibilidad -->
+    <section class="theme-card rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Tamaño del Texto</h2>
+      <p class="theme-text-secondary text-sm mb-4">Próximamente: Ajusta el tamaño del texto para mejorar la legibilidad.</p>
+    </section>
+
+    <section class="theme-card rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Contraste</h2>
+      <p class="theme-text-secondary text-sm mb-4">Próximamente: Ajusta el contraste de los colores para mejorar la visibilidad.</p>
+    </section>
+  </section>
+
+  <script>
+    (function () {
+      function updateToggle(toggle: HTMLInputElement) {
+        const theme = document.documentElement.getAttribute('data-theme') || 'light';
+        toggle.checked = theme === 'dark';
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('theme-toggle');
+        if (!(toggle instanceof HTMLInputElement)) return;
+
+        // inicializar estado del toggle
+        updateToggle(toggle);
+
+        // change event toggles theme
+        toggle.addEventListener('change', function () {
+          if (typeof window.toggleTheme === 'function') {
+            window.toggleTheme();
+          } else {
+            // fallback si no existe la función
+            const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+          }
+        });
+
+        // si el tema cambia desde otro sitio, actualizar estado del toggle
+        document.addEventListener('themechange', function () { 
+          updateToggle(toggle);
+        });
+      });
+    })();
+  </script>
+</BaseLayout>

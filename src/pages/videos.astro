@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import VideoCard from '../components/VideoCard.astro'
+---
+<BaseLayout>
+  <h2 slot="content" class="text-2xl font-bold mb-4">Videos cortos</h2>
+  <p slot="content" class="mb-6 text-slate-600">Micro-lecciones de ~1 minuto para explicar conceptos concretos y rápidos.</p>
+
+  <div slot="content" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <VideoCard title="¿Qué es Git?" author="Ana - Dev" youtubeId="hQ3v2k4F6bk" />
+    <VideoCard title="¿Qué hace un Data Scientist?" author="María" youtubeId="ZVib2nC1x7Y" />
+    <VideoCard title="Introducción a HTML" author="Luna" youtubeId="qz0aGYrrlhU" />
+  </div>
+</BaseLayout>
