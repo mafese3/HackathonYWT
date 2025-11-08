@@ -1,33 +1,46 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import MentorCard from '../components/MentorCard.astro'
 ---
 <BaseLayout>
-  <h2 slot="content" class="text-2xl font-bold mb-4">Foro comunitario</h2>
-  <p slot="content" class="mb-4 theme-text-secondary">Comparte referentes, haz preguntas y publica experiencias. (Prototipo estático — se puede conectar a un backend después)</p>
+  <h2 slot="content" class="text-2xl font-bold mb-4">Nuestras Mentoras</h2>
+  <p slot="content" class="mb-6 theme-text-secondary">Conoce a nuestras mentoras expertas en tecnología. Puedes contactarlas directamente para recibir orientación y apoyo en tu carrera.</p>
 
-  <section slot="content" class="space-y-4">
-    <article class="theme-card rounded shadow p-4">
-      <h3 class="font-semibold">Referente: Dra. Ana López</h3>
-      <p class="text-sm theme-text-secondary">Investigadora en IA. ¿Alguien tiene enlaces a sus charlas?</p>
-    </article>
-
-    <article class="theme-card rounded shadow p-4">
-      <h3 class="font-semibold">Consejos para la primera hackathon</h3>
-      <p class="text-sm theme-text-secondary">Equipo mixto y enfoque en MVP. Comparte tu experiencia.</p>
-    </article>
-
-    <form class="theme-card rounded shadow p-4 space-y-3">
-      <label class="block">
-        <span class="text-sm theme-text-secondary">Título</span>
-        <input class="mt-1 block w-full theme-input rounded px-2 py-1" />
-      </label>
-      <label class="block">
-        <span class="text-sm theme-text-secondary">Mensaje</span>
-        <textarea class="mt-1 block w-full theme-input rounded px-2 py-1" rows="4"></textarea>
-      </label>
-      <button class="bg-accent-color hover:opacity-90 text-white px-4 py-2 rounded transition-opacity">
-        Publicar (demo)
-      </button>
-    </form>
+  <section slot="content" class="space-y-6">
+    <MentorCard 
+      name="Marián García"
+      description=" Marián García, conocida como Boticaria García, es una farmacéutica, nutricionista y divulgadora científica española que ha popularizado la ciencia y la salud a través de diversos medios. Doctora en Farmacia, se dio a conocer por su blog y su farmacia rural, donde combinaba el rigor científico con un tono cercano y humorístico. Es colaboradora habitual en televisión, radio y prensa (Antena 3, La Sexta, El Mundo), y autora de libros superventas como El jamón de York no existe, donde desmonta mitos alimentarios y guía al consumidor. Su labor ha sido reconocida con premios como el Estrategia NAOS por su contribución a la divulgación de hábitos saludables."
+      linkedinUrl="https://www.linkedin.com/in/mari%C3%A1ngarc%C3%ADagarc%C3%ADa-divulgadora-profesora/?originalSubdomain=es"
+      imagePath="/images/mentor1.jpg"
+    />
+    
+    <MentorCard 
+      name="Rocío Vidal Menacho"
+      description="Rocío Vidal Menacho, más conocida como La Gata de Schrödinger, es una periodista y una de las divulgadoras científicas más influyentes de España. Es famosa por su canal de YouTube, donde se dedica a fomentar el pensamiento crítico y desmentir pseudociencias, mitos y bulos con un estilo directo, accesible y con toques de humor. Además de su labor en redes, es autora de libros como ¡Que le den a la ciencia! y ¡Eureka!, y colabora frecuentemente en medios de comunicación."
+      linkedinUrl="https://www.instagram.com/lagatadeschrodinger/?hl=es"
+      imagePath="/images/mentor2.jpg"
+      socialType="instagram"
+    />
+    
+    <MentorCard 
+      name="Sandra Ortonobes"
+      description="Sandra Ortonobes Lara, conocida popularmente como La Hiperactina, es una destacada divulgadora científica española. Es graduada en Ciencias Biomédicas por la Universidad de Barcelona y cuenta con un máster en Comunicación Científica, Médica y Ambiental. Se hizo famosa a través de su canal de YouTube y otras redes sociales, donde explica de forma amena y rigurosa temas de biomedicina y el funcionamiento del cuerpo humano. Además de su labor en redes, es escritora del libro ¿Qué puede salir mal? y colabora con medios como National Geographic y El Confidencial. Su objetivo es acercar la ciencia al público general y combatir la desinformación."
+      linkedinUrl="https://www.linkedin.com/in/sandra-ortonobes/?originalSubdomain=es"
+      imagePath="/images/mentor3.jpg"
+    />
+    
+    <MentorCard 
+      name="Luisina de Paula"
+      description="TodoCode es una popular plataforma educativa y canal de YouTube fundado por Luisina de Paula, ingeniera en informática y profesora universitaria. Desde pequeña, Luisina mostró una gran pasión por la tecnología, lo que la llevó a formarse académicamente y a dedicarse a la enseñanza. Su misión con TodoCode es transmitir conocimientos sobre programación y otras tecnologías de manera sencilla, accesible y divertida a miles de personas de habla hispana. A través de cursos gratuitos y contenido en redes sociales, se ha consolidado como un referente para quienes desean iniciarse o profundizar en el mundo de la informática."
+      linkedinUrl="https://www.linkedin.com/company/todocodeacademy/"
+      imagePath="/images/mentor4.jpg"
+    />
+    
+    <MentorCard 
+      name="Irene Puertas Pascual"
+      description="Irene Puertas Pascual es una diseñadora y artista digital multidisciplinar con un perfil técnico muy versátil. Su trabajo se mueve principalmente entre el diseño gráfico, el arte 3D y el motion graphics (animación digital). Su enfoque profesional abarca la creación de identidades visuales para marcas, pero destaca especialmente en la creación de animaciones y modelado 3D. Utiliza herramientas estándar de la industria como 3ds Max, Photoshop e Illustrator para dar vida a sus proyectos, que van desde ilustraciones y diseños gráficos estáticos hasta complejas animaciones 3D."
+      linkedinUrl="https://www.linkedin.com/in/irenepuertaspascual/"
+      imagePath="/images/mentor5.jpg"
+    />
   </section>
 </BaseLayout>

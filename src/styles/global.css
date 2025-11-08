@@ -9,7 +9,7 @@
   --bg-card: theme('colors.white');
   --bg-header: theme('colors.white');
   --text-main: theme('colors.gray.900');
-  --text-secondary: theme('colors.gray.600');
+  --text-secondary: theme('colors.gray.500');
   --border-color: theme('colors.gray.200');
   --accent-color: theme('colors.purple.600');
   

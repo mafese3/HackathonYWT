@@ -1,17 +1,49 @@
 ---
-// Props: title, description, youtubeId
-const { title = 'Curso', description = '', youtubeId = '' } = Astro.props
+// Props: title, description, youtubeId, playlistThumbnail (opcional)
+const { title = 'Curso', description = '', youtubeId = '', playlistThumbnail = '' } = Astro.props
+
+// Detectar si es una playlist (comienza con "PL") o un video individual
+const isPlaylist = youtubeId && youtubeId.startsWith('PL')
+
+// Para playlists, usar la URL de playlist
+const videoUrl = youtubeId 
+  ? (isPlaylist 
+      ? `https://www.youtube.com/playlist?list=${youtubeId}` 
+      : `https://www.youtube.com/watch?v=${youtubeId}`)
+  : '#'
+
+// Para playlists, usar la miniatura personalizada si se proporciona, sino una predeterminada
+const thumbnailUrl = youtubeId 
+  ? (isPlaylist 
+      ? (playlistThumbnail || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`)
+      : `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`)
+  : ''
 ---
-<article class="theme-card rounded shadow p-4 flex gap-4">
-  <div class="w-40 h-24 theme-block rounded overflow-hidden">
-    {youtubeId ? (
-      <iframe class="w-full h-full" src={`https://www.youtube.com/embed/${youtubeId}`} title={title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    ) : (
-      <div class="w-full h-full flex items-center justify-center theme-text-secondary">Preview</div>
-    )}
-  </div>
-  <div>
-    <h3 class="font-semibold">{title}</h3>
-    <p class="text-sm theme-text-secondary">{description}</p>
-  </div>
-</article>
+<a href={videoUrl} target="_blank" rel="noopener noreferrer" class="block">
+  <article class="theme-card rounded shadow p-4 flex flex-col md:flex-row gap-4 select-none h-full hover:shadow-lg transition-shadow cursor-pointer">
+    <!-- Título (solo visible en móvil) -->
+    <h3 class="text-xl font-semibold md:hidden">
+      {title}
+    </h3>
+    
+    <!-- Miniatura del vídeo -->
+    <div class="w-full md:w-64 lg:w-80 aspect-video md:aspect-auto md:h-40 theme-block rounded overflow-hidden md:flex-shrink-0">
+      {youtubeId ? (
+        <img src={thumbnailUrl} alt={title} class="w-full h-full object-cover" />
+      ) : (
+        <div class="w-full h-full flex items-center justify-center theme-text-secondary">Preview</div>
+      )}
+    </div>
+    
+    <!-- Contenedor de texto -->
+    <div class="flex flex-col gap-2 flex-1">
+      <!-- Título (oculto en móvil, visible en tablet y desktop) -->
+      <h3 class="hidden md:block text-xl font-semibold">
+        {title}
+      </h3>
+      
+      <!-- Descripción -->
+      <p class="text-sm theme-text-secondary leading-relaxed text-justify">{description}</p>
+    </div>
+  </article>
+</a>

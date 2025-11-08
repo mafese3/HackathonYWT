@@ -45,6 +45,9 @@ const themeScript = `
     <slot name="head" />
     <title> Lyra</title>
     <link rel="icon" type="image/png" href="/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <script>
@@ -80,7 +83,7 @@ const themeScript = `
       <div class="container py-4 flex items-center justify-between">
         <a href="/" class="flex items-center gap-3 theme-link">
           <img src="/images/logo_notext.png" alt="Lyra Logo" class="h-8 w-8" />
-          <span class="text-xl font-bold">LYRA</span>
+          <span class="text-xl font-bold" style="font-family: 'Noto Serif', serif;">LYRA</span>
         </a>
         <Nav />
       </div>

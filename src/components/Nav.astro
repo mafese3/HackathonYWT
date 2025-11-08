@@ -1,17 +1,29 @@
 ---
 const links = [
-  { href: '/', label: 'Inicio' },
   { href: '/videos', label: 'Videos cortos' },
   { href: '/courses', label: 'Cursos' },
   { href: '/forum', label: 'Foro' },
   { href: '/events', label: 'Eventos' },
   { href: '/accessibility', label: 'Accesibilidad' }
 ]
+
+// Obtener la URL actual
+const currentPath = Astro.url.pathname
 ---
 <nav>
-  <ul class="flex gap-4 items-center">
-    {links.map(link => (
-      <li><a class="text-gray-300 hover:text-purple-400" href={link.href}>{link.label}</a></li>
-    ))}
+  <ul class="flex flex-wrap gap-2 md:gap-4 items-center justify-end">
+    {links.map(link => {
+      const isActive = currentPath === link.href || (currentPath === '/' && link.href === '/videos')
+      return (
+        <li>
+          <a 
+            class={`hover:text-purple-400 text-sm md:text-base whitespace-nowrap transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'text-gray-300'}`}
+            href={link.href}
+          >
+            {link.label}
+          </a>
+        </li>
+      )
+    })}
   </ul>
 </nav>
