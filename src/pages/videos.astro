@@ -1,14 +1,169 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import VideoCard from '../components/VideoCard.astro'
----
-<BaseLayout>
-  <h2 slot="content" class="text-2xl font-bold mb-4">Videos cortos</h2>
-  <p slot="content" class="mb-6 text-slate-600">Micro-lecciones de ~1 minuto para explicar conceptos concretos y rápidos.</p>
 
-  <div slot="content" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <VideoCard title="¿Qué es Git?" author="Ana - Dev" youtubeId="hQ3v2k4F6bk" />
-    <VideoCard title="¿Qué hace un Data Scientist?" author="María" youtubeId="ZVib2nC1x7Y" />
-    <VideoCard title="Introducción a HTML" author="Luna" youtubeId="qz0aGYrrlhU" />
+const videos = [
+  { title: "¿Qué es Git?", author: "Ana - Dev", youtubeId: "hQ3v2k4F6bk", platform: "youtube" },
+  { title: "¿Qué hace un Data Scientist?", author: "María", youtubeId: "ZVib2nC1x7Y", platform: "youtube" },
+  { title: "Introducción a HTML", author: "Luna", youtubeId: "qz0aGYrrlhU", platform: "youtube" },
+  { title: "Video TikTok 1", author: "Creador 1", youtubeId: "7300000000000000000", platform: "tiktok" },
+  { title: "Video TikTok 2", author: "Creador 2", youtubeId: "7300000000000000001", platform: "tiktok" },
+  { title: "Video TikTok 3", author: "Creador 3", youtubeId: "7300000000000000002", platform: "tiktok" },
+  { title: "Video TikTok 4", author: "Creador 4", youtubeId: "7300000000000000003", platform: "tiktok" },
+  { title: "Video TikTok 5", author: "Creador 5", youtubeId: "7300000000000000004", platform: "tiktok" }
+];
+---
+
+<style>
+  .snap-container {
+    height: calc(100vh - 4rem); /* Altura total menos el header */
+    overflow-y: hidden;
+    scroll-snap-type: y mandatory;
+    position: relative;
+  }
+
+  .nav-arrows-container {
+    position: fixed;
+    right: max(1rem, calc((100% - 48rem) / 2 + 1rem)); /* 48rem = max-w-3xl (768px) */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 10;
+  }
+
+  .nav-arrow {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .nav-arrow:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+  }
+
+  .nav-arrow.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<BaseLayout>
+  <div slot="content" class="relative">
+    <div class="snap-container" id="videos-container">
+      {videos.map((video, index) => (
+        <VideoCard 
+          title={video.title} 
+          author={video.author} 
+          videoId={video.youtubeId}
+          platform={video.platform}
+          data-index={index}
+        />
+      ))}
+    </div>
+
+    <div class="nav-arrows-container">
+      <button class="nav-arrow hidden" aria-label="Video anterior">
+        <span class="material-symbols-outlined">keyboard_arrow_up</span>
+      </button>
+      <button class="nav-arrow" aria-label="Siguiente video">
+        <span class="material-symbols-outlined">keyboard_arrow_down</span>
+      </button>
+    </div>
   </div>
+
+  <script>
+    // Definiciones de tipos para la API de YouTube
+    declare global {
+      interface Window {
+        onYouTubeIframeAPIReady: () => void;
+        YT: any;
+      }
+    }
+    
+    // Cargar la API de YouTube IFrame
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    const container = document.getElementById('videos-container');
+    const [upButton, downButton] = document.querySelectorAll('.nav-arrow');
+    const videoElements = container.children;
+    let currentIndex = 0;
+    let players = [];
+
+    // Función que se llamará cuando la API de YouTube esté lista
+    window.onYouTubeIframeAPIReady = function() {
+      // Inicializar solo los players de YouTube
+      document.querySelectorAll('.youtube-video').forEach((video) => {
+        const videoContainer = video.closest('.video-container');
+        const containerIndex = Array.from(videoElements).indexOf(videoContainer);
+        
+        players[containerIndex] = new YT.Player(video, {
+          events: {
+            'onReady': (event) => {
+              // Reproducir el primer video automáticamente si es YouTube
+              if (containerIndex === 0) {
+                event.target.playVideo();
+              }
+            }
+          }
+        });
+      });
+    };
+
+    function updateNavigation() {
+      // Actualizar visibilidad de los botones
+      if (upButton) upButton.classList.toggle('hidden', currentIndex === 0);
+      if (downButton) downButton.classList.toggle('hidden', currentIndex === videoElements.length - 1);
+    }
+
+    function scrollToVideo(index) {
+      if (index >= 0 && index < videoElements.length) {
+        // Pausar el video actual
+        if (players[currentIndex]) {
+          players[currentIndex].pauseVideo();
+        }
+
+        videoElements[index].scrollIntoView({ behavior: 'smooth' });
+        currentIndex = index;
+
+        // Reproducir el nuevo video
+        if (players[index]) {
+          players[index].seekTo(0);
+          players[index].playVideo();
+        }
+
+        updateNavigation();
+      }
+    }
+
+    // Event listeners para los botones
+    upButton?.addEventListener('click', () => scrollToVideo(currentIndex - 1));
+    downButton?.addEventListener('click', () => scrollToVideo(currentIndex + 1));
+
+    // Event listener para teclas de flecha
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        scrollToVideo(currentIndex - 1);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        scrollToVideo(currentIndex + 1);
+      }
+    });
+
+    // Inicializar navegación
+    updateNavigation();
+  </script>
 </BaseLayout>

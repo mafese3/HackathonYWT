@@ -46,6 +46,7 @@ const themeScript = `
     <title> Lyra</title>
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <script async src="https://www.tiktok.com/embed.js"></script>
     <script>
       /** Configura el tema inicial y expone funciones de tema */
       (function () {
@@ -82,7 +83,7 @@ const themeScript = `
       </div>
     </header>
 
-    <main class="container py-8 flex-grow">
+    <main class="flex-grow" class:list={[{"container py-8": Astro.url.pathname !== "/videos"}]}>
       <slot name="content" />
     </main>
 

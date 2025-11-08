@@ -1,15 +1,46 @@
 ---
-// Props: title, author, youtubeId (shorts or normal)
-const { title = 'Título', author = 'Autor', youtubeId = '' } = Astro.props
+// Props: title, author, videoId, platform ('youtube' or 'tiktok')
+const { title = 'Título', author = 'Autor', videoId = '', platform = 'youtube' } = Astro.props
 ---
-<article class="theme-card rounded shadow p-4">
-  <div class="aspect-video mb-3">
-    {youtubeId ? (
-      <iframe class="w-full h-full rounded" src={`https://www.youtube.com/embed/${youtubeId}`} title={title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<article class="relative h-[calc(100vh-4rem)] w-full max-w-3xl mx-auto snap-start video-container" data-platform={platform}>
+  <div class="absolute inset-0 flex items-center justify-center bg-black">
+    {platform === 'youtube' && videoId ? (
+      <iframe 
+        class="w-full h-full youtube-video"
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&controls=1&loop=1&modestbranding=1&rel=0&showinfo=0&mute=1&playlist=${videoId}`}
+        title={title} 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+      ></iframe>
+    ) : platform === 'tiktok' && videoId ? (
+      <blockquote 
+        class="tiktok-embed tiktok-video w-full h-full flex items-center justify-center" 
+        cite={`https://www.tiktok.com/@placeholder/video/${videoId}`}
+        data-video-id={videoId}
+        style="max-width: 605px; min-width: 325px;"
+      >
+        <section>
+          <a 
+            target="_blank" 
+            title={title}
+            href={`https://www.tiktok.com/@placeholder/video/${videoId}`}
+          >
+            {title}
+          </a>
+        </section>
+      </blockquote>
     ) : (
       <div class="w-full h-full theme-block rounded flex items-center justify-center theme-text-secondary">Video</div>
     )}
   </div>
-  <h3 class="font-semibold">{title}</h3>
-  <p class="text-sm theme-text-secondary">{author}</p>
+  
+  {/* Overlay con información */}
+  <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white">
+    <h3 class="text-lg font-bold">{title}</h3>
+    <div class="flex items-center gap-2 mt-2">
+      <span class="material-symbols-outlined text-xl">person</span>
+      <p class="text-sm">{author}</p>
+    </div>
+  </div>
 </article>
