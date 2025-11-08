@@ -9,7 +9,7 @@
   --bg-card: theme('colors.white');
   --bg-header: theme('colors.white');
   --text-main: theme('colors.gray.900');
-  --text-secondary: theme('colors.gray.500');
+  --text-secondary: theme('colors.gray.600');
   --border-color: theme('colors.gray.200');
   --accent-color: theme('colors.purple.600');
   
@@ -121,7 +121,7 @@ html.theme-loaded .theme-input {
 
 /* Utilidades */
 .container {
-  max-width: theme('maxWidth.4xl');
+  max-width: theme('maxWidth.7xl');
   margin-left: auto;
   margin-right: auto;
   padding-left: theme('spacing.4');

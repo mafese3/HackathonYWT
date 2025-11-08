@@ -1,15 +1,205 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import EventCard from '../components/EventCard.astro'
+
+// Eventos del mes
+const events = [
+  { title: "Hackathon Yes We Tech", date: "2025-11-07", location: "Málaga", link: "https://sites.google.com/yeswetech.org/yeswetech/eventos/hackaton-mujeres" },
+  { title: "¿Cuáles son las líneas rojas de la IA? Ética y utilidad", date: "2025-11-10", location: "Cervezas Victoria, Málaga", link: "https://www.malaga-startups.com/eventos/cuales-son-las-lineas-rojas-de-la-ia-etica-y-utilidad" },
+  { title: "STEM Makers", date: "2025-11-19", location: "La Térmica, Málaga", link: "https://www.malaga.es/cultura/1316/com1_md3_cd-60693/stem-makers-dia-19-16-00-h" },
+  { title: "Leadingirls", date: "2025-12-03", location: "Polo Nacional de Contenidos Digitales, Málaga", link: "https://www.leadingirls.com/" },
+  { title: "New Space & Solutions", date: "2026-04-14", location: "Auditorio Cartuja - Sevilla TechPark", link: "https://newspaceandsolutions.com/" },
+  { title: "5G Forum", date: "2026-05-12", location: "Auditorio Cartuja - Sevilla Tech", link: "https://www.5gforum.es/" },
+  { title: "Digital Enterprise Show", date: "2026-06-09", location: "Málaga - Fycma", link: "https://www.des-show.com/es/" },
+  { title: "ECONGRESS MÁLAGA", date: "2026-06-19", location: "Palacio de congresos, Málaga", link: "https://www.econgressmalaga.es/" },
+  { title: "BiznagaFest", date: "2025-10-25", location: "E.T.S de Ingeniería Informática, UMA", link: "https://www.biznagafest.com/" },
+]
+
+// Obtener fecha actual
+const now = new Date()
+const currentMonth = now.getMonth() // 0-11
+const currentYear = now.getFullYear()
+
+// Nombres de meses y días
+const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+const dayNames = ["L", "M", "X", "J", "V", "S", "D"]
+
+// Calcular días del mes
+const firstDay = new Date(currentYear, currentMonth, 1)
+const lastDay = new Date(currentYear, currentMonth + 1, 0)
+const daysInMonth = lastDay.getDate()
+
+// Día de la semana del primer día (ajustado: 0=Lunes, 6=Domingo)
+let firstDayOfWeek = firstDay.getDay() - 1
+if (firstDayOfWeek === -1) firstDayOfWeek = 6
+
+// Crear array de días con sus eventos
+const calendarDays = []
+for (let i = 0; i < firstDayOfWeek; i++) {
+  calendarDays.push({ day: null, events: [] })
+}
+
+for (let day = 1; day <= daysInMonth; day++) {
+  const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+  const dayEvents = events.filter(e => e.date === dateString)
+  calendarDays.push({ day, events: dayEvents })
+}
 ---
+
 <BaseLayout>
-  <h2 slot="content" class="text-2xl font-bold mb-4">Calendario de eventos</h2>
-  <p slot="content" class="mb-6 text-slate-600">Hackathones, meetups, ponencias y otros eventos relevantes.</p>
+  <div slot="content">
+    <h2 class="text-2xl font-bold mb-4">Calendario de eventos</h2>
+    <p class="mb-6 theme-text-secondary">Hackathones, meetups, ponencias y otros eventos relevantes.</p>
 
-  <div slot="content" class="grid sm:grid-cols-2 gap-4">
-    <EventCard title="Hackathon Mujeres en Tech" date="2025-12-05" location="Madrid (online)" link="#" />
-    <EventCard title="Charla: Carrera en Data" date="2025-11-20" location="Online" link="#" />
+    <!-- Título del mes -->
+    <h3 class="month-title-static">{monthNames[currentMonth]} {currentYear}</h3>
+
+    <!-- Calendario -->
+    <div class="calendar-container">
+      <!-- Nombres de los días -->
+      <div class="calendar-grid">
+        {dayNames.map(dayName => (
+          <div class="day-name">{dayName}</div>
+        ))}
+        
+        <!-- Días del mes -->
+        {calendarDays.map(({ day, events }) => (
+          <div class={`calendar-day ${day ? '' : 'empty'} ${day === now.getDate() && currentMonth === now.getMonth() ? 'today' : ''}`}>
+            {day && (
+              <>
+                <span class="day-number">{day}</span>
+                {events.length > 0 && (
+                  <div class="events-list">
+                    {events.map(event => (
+                      <a 
+                        href={event.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="event-pill" 
+                        title={`${event.title} - ${event.location}`}
+                      >
+                        {event.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <p class="mt-6 text-sm theme-text-secondary">Haz clic en un evento para ver más detalles.</p>
   </div>
-
-  <p slot="content" class="mt-6 text-sm text-slate-500">Nota: esta página es una lista estática; para un calendario interactivo se puede integrar FullCalendar o Google Calendar API.</p>
 </BaseLayout>
+
+<style>
+  .month-title-static {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .calendar-container {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+  }
+
+  .day-name {
+    text-align: center;
+    font-weight: 600;
+    padding: 1rem 0.5rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    font-size: 0.875rem;
+  }
+
+  .calendar-day {
+    min-height: 100px;
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    position: relative;
+    transition: background-color 0.2s;
+  }
+
+  .calendar-day:hover:not(.empty) {
+    background: var(--color-bg-secondary);
+  }
+
+  .calendar-day.empty {
+    background: var(--color-bg-secondary);
+    opacity: 0.3;
+  }
+
+  .calendar-day.today {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+
+  .day-number {
+    display: block;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-text);
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .event-pill {
+    background: rgba(59, 130, 246, 0.8);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    display: block;
+    line-height: 1.3;
+  }
+
+  .event-pill:hover {
+    background: rgba(59, 130, 246, 1);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .calendar-day {
+      min-height: 80px;
+      padding: 0.25rem;
+    }
+
+    .day-name {
+      padding: 0.75rem 0.25rem;
+      font-size: 0.75rem;
+    }
+
+    .day-number {
+      font-size: 0.75rem;
+    }
+
+    .event-pill {
+      font-size: 0.625rem;
+      padding: 0.125rem 0.25rem;
+    }
+  }
+</style>

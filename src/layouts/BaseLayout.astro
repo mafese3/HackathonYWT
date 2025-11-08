@@ -44,6 +44,7 @@ const themeScript = `
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <slot name="head" />
     <title> Lyra</title>
+    <link rel="icon" type="image/png" href="/images/logo.png" />
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <script>
@@ -77,7 +78,10 @@ const themeScript = `
   <body class="min-h-screen flex flex-col">
     <header class="theme-header shadow-lg">
       <div class="container py-4 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold theme-link">LYRA</a>
+        <a href="/" class="flex items-center gap-3 theme-link">
+          <img src="/images/logo_notext.png" alt="Lyra Logo" class="h-8 w-8" />
+          <span class="text-xl font-bold">LYRA</span>
+        </a>
         <Nav />
       </div>
     </header>
@@ -87,7 +91,7 @@ const themeScript = `
     </main>
 
     <footer class="theme-header border-t mt-auto" class:list={[{"hidden": Astro.url.pathname === "/videos"}]}>
-      <div class="container py-6 text-sm theme-text-secondary">© {new Date().getFullYear()} Yes We Tech — Plataforma educativa para reducir la brecha de género en STEM</div>
+      <div class="container py-6 text-sm theme-text-secondary">© {new Date().getFullYear()} Lyra — Plataforma educativa para reducir la brecha de género en STEM</div>
     </footer>
   </body>
 </html>
