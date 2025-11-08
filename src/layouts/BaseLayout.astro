@@ -86,7 +86,7 @@ const themeScript = `
       <slot name="content" />
     </main>
 
-    <footer class="theme-header border-t mt-auto">
+    <footer class="theme-header border-t mt-auto" class:list={[{"hidden": Astro.url.pathname === "/videos"}]}>
       <div class="container py-6 text-sm theme-text-secondary">© {new Date().getFullYear()} Yes We Tech — Plataforma educativa para reducir la brecha de género en STEM</div>
     </footer>
   </body>
