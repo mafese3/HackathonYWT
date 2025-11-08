@@ -175,6 +175,73 @@ const videos = [
       }
     });
 
+    // Variables para swipe/deslizamiento (touch y mouse)
+    let startY = 0;
+    let endY = 0;
+    let isDragging = false;
+    const minSwipeDistance = 50; // Píxeles mínimos para considerar un swipe
+
+    // Event listeners para touch (móvil)
+    container.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (e) => {
+      endY = e.touches[0].clientY;
+    }, { passive: true });
+
+    container.addEventListener('touchend', () => {
+      handleSwipe();
+    }, { passive: true });
+
+    // Event listeners para mouse (escritorio)
+    container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      container.style.cursor = 'grabbing';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        endY = e.clientY;
+      }
+    });
+
+    container.addEventListener('mouseup', () => {
+      if (isDragging) {
+        handleSwipe();
+        isDragging = false;
+        container.style.cursor = 'grab';
+      }
+    });
+
+    container.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        container.style.cursor = 'grab';
+      }
+    });
+
+    // Añadir cursor grab
+    container.style.cursor = 'grab';
+
+    function handleSwipe() {
+      const swipeDistance = startY - endY;
+      
+      // Swipe hacia arriba (siguiente video)
+      if (swipeDistance > minSwipeDistance) {
+        scrollToVideo(currentIndex + 1);
+      }
+      // Swipe hacia abajo (video anterior)
+      else if (swipeDistance < -minSwipeDistance) {
+        scrollToVideo(currentIndex - 1);
+      }
+      
+      // Reset
+      startY = 0;
+      endY = 0;
+    }
+
     // Inicializar navegación
     updateNavigation();
   </script>
