@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname
       return (
         <li>
           <a 
-            class={`hover:text-purple-400 text-sm md:text-base whitespace-nowrap transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'text-gray-300'}`}
+            class={`hover:text-purple-400 text-sm md:text-base whitespace-nowrap transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'theme-text-secondary'}`}
             href={link.href}
           >
             {link.label}
