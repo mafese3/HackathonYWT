@@ -3,14 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import VideoCard from '../components/VideoCard.astro'
 
 const videos = [
-  { title: "¿Qué es Git?", author: "Ana - Dev", youtubeId: "hQ3v2k4F6bk", platform: "youtube" },
-  { title: "¿Qué hace un Data Scientist?", author: "María", youtubeId: "ZVib2nC1x7Y", platform: "youtube" },
-  { title: "Introducción a HTML", author: "Luna", youtubeId: "qz0aGYrrlhU", platform: "youtube" },
-  { title: "Video TikTok 1", author: "Creador 1", youtubeId: "7300000000000000000", platform: "tiktok" },
-  { title: "Video TikTok 2", author: "Creador 2", youtubeId: "7300000000000000001", platform: "tiktok" },
-  { title: "Video TikTok 3", author: "Creador 3", youtubeId: "7300000000000000002", platform: "tiktok" },
-  { title: "Video TikTok 4", author: "Creador 4", youtubeId: "7300000000000000003", platform: "tiktok" },
-  { title: "Video TikTok 5", author: "Creador 5", youtubeId: "7300000000000000004", platform: "tiktok" }
+  
+  { title: "YouTube Short", author: "Creador", youtubeId: "MPOxYXVy2Bs" },
+  { title: "YouTube Short", author: "Creador", youtubeId: "MMPCWQJpSho" },
+  { title: "YouTube Short", author: "Creador", youtubeId: "XQZLzpsrxlA" },
+  { title: "YouTube Short", author: "Creador", youtubeId: "uA6vy5x9OGQ" },
+  { title: "YouTube Short", author: "Creador", youtubeId: "ieWm4sAtvOk" },
+  { title: "YouTube Short", author: "Creador", youtubeId: "kM5kfsB5Boo" }
 ];
 ---
 
@@ -65,7 +64,6 @@ const videos = [
           title={video.title} 
           author={video.author} 
           videoId={video.youtubeId}
-          platform={video.platform}
           data-index={index}
         />
       ))}
@@ -88,6 +86,7 @@ const videos = [
         onYouTubeIframeAPIReady: () => void;
         YT: any;
       }
+      const YT: any;
     }
     
     // Cargar la API de YouTube IFrame
@@ -123,29 +122,42 @@ const videos = [
     };
 
     function updateNavigation() {
-      // Actualizar visibilidad de los botones
-      if (upButton) upButton.classList.toggle('hidden', currentIndex === 0);
-      if (downButton) downButton.classList.toggle('hidden', currentIndex === videoElements.length - 1);
+      // Los botones siempre están visibles para navegación infinita
+      if (upButton) upButton.classList.remove('hidden');
+      if (downButton) downButton.classList.remove('hidden');
     }
 
     function scrollToVideo(index) {
-      if (index >= 0 && index < videoElements.length) {
-        // Pausar el video actual
-        if (players[currentIndex]) {
-          players[currentIndex].pauseVideo();
-        }
-
-        videoElements[index].scrollIntoView({ behavior: 'smooth' });
-        currentIndex = index;
-
-        // Reproducir el nuevo video
-        if (players[index]) {
-          players[index].seekTo(0);
-          players[index].playVideo();
-        }
-
-        updateNavigation();
+      // Pausar el video actual
+      if (players[currentIndex]) {
+        players[currentIndex].pauseVideo();
       }
+
+      let newIndex = index;
+      let isLooping = false;
+
+      // Hacer bucle infinito
+      if (index < 0) {
+        newIndex = videoElements.length - 1;
+        isLooping = true;
+      } else if (index >= videoElements.length) {
+        newIndex = 0;
+        isLooping = true;
+      }
+
+      // Si es un bucle, scroll instantáneo; si no, suave
+      videoElements[newIndex].scrollIntoView({ 
+        behavior: isLooping ? 'auto' : 'smooth' 
+      });
+      currentIndex = newIndex;
+
+      // Reproducir el nuevo video
+      if (players[newIndex]) {
+        players[newIndex].seekTo(0);
+        players[newIndex].playVideo();
+      }
+
+      updateNavigation();
     }
 
     // Event listeners para los botones
