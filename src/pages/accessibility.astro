@@ -24,9 +24,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section slot="content" class="max-w-3xl mx-auto">
     <h1 class="text-2xl font-semibold mb-4">Accesibilidad</h1>
 
-    <div class="mb-6">
-      <label class="block mb-2 font-medium">Modo de color</label>
-      <div class="flex items-center">
+    <!-- Tarjeta cambio de tema -->
+    <section class="theme-card rounded-lg p-6 mb-6 flex items-center justify-between">
+      <div> 
+        <label class="block mb-2 font-medium">Modo de color</label>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+          Elige entre modo claro u oscuro. La selección se guarda en tu navegador.
+        </p>
+      </div> 
+        
+      <div class="flex items-center justify-center gap-4">
+        <span class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+          <span class="material-symbols-outlined text-xl text-gray-800 dark:text-gray-300">light_mode</span>
+        </span>
         <label class="relative inline-flex items-center cursor-pointer">
           <input 
             type="checkbox" 
@@ -34,18 +44,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             class="sr-only peer"
             aria-label="Alternar tema claro y oscuro"
           />
-          <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600">
-          </div>
-          <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-            <span class="dark:hidden">Modo oscuro</span>
-            <span class="hidden dark:inline">Modo claro</span>
-          </span>
+          <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
         </label>
+        <span class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+          <span class="material-symbols-outlined text-xl text-gray-800 dark:text-gray-300">dark_mode</span>
+        </span>
       </div>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
-        Elige entre modo claro u oscuro. La selección se guarda en tu navegador.
-      </p>
-    </div>
+        
+      
+    </section>
 
     <!-- Otras opciones de accesibilidad -->
     <section class="theme-card rounded-lg p-6 mb-6">

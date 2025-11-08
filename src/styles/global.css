@@ -57,13 +57,13 @@ body {
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
 }
 
-/* Transiciones suaves */
-body, 
-.theme-card,
-.theme-header,
-.theme-block,
-.theme-input {
-  transition: all 0.3s ease;
+/* Transiciones suaves - solo después de la carga inicial */
+html.theme-loaded body, 
+html.theme-loaded .theme-card,
+html.theme-loaded .theme-header,
+html.theme-loaded .theme-block,
+html.theme-loaded .theme-input {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Cards */
